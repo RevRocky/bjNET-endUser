@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="250.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60" fx:controller="LogInScreenController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bjNET.gui.LoginScreenController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="102.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="113.0" />
@@ -35,7 +35,7 @@
          </GridPane.margin>
       </Label>
       <ComboBox fx:id="serverEntry" editable="true" prefWidth="150.0" promptText="000.000.00.00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button fx:id="connectButton" mnemonicParsing="false" onKeyPressed="#openConnection" onMouseClicked="#openConnection" prefHeight="25.0" prefWidth="84.0" text="Connect" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+      <Button fx:id="connectButton" mnemonicParsing="false" onKeyPressed="#openConnectionKey" onMouseClicked="#openConnectionClick" prefHeight="25.0" prefWidth="84.0" text="Connect" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
       <Label prefHeight="44.0" prefWidth="116.0" text="bjNET v0.2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
    </children>
 </GridPane>
