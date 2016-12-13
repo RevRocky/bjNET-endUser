@@ -67,8 +67,5 @@ public class LoginScreenController {
 
     @FXML
     void initialize() {
-        assert handleEntry != null : "fx:id=\"handleEntry\" was not injected: check your FXML file 'Login_Screen.fxml'.";
-        assert serverEntry != null : "fx:id=\"serverEntry\" was not injected: check your FXML file 'Login_Screen.fxml'.";
-        assert connectButton != null : "fx:id=\"connectButton\" was not injected: check your FXML file 'Login_Screen.fxml'.";
     }
 }

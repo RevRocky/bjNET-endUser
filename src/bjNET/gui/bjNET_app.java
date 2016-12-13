@@ -12,7 +12,7 @@ public class bjNET_app extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Login_Screen.fxml"));
         primaryStage.setTitle("bjNET");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 250, 175));
         primaryStage.show();
     }
 
