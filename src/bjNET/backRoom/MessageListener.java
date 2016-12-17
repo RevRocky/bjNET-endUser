@@ -9,14 +9,8 @@ import bjNET.gui.MainScreenController;
  */
 public class MessageListener {
 
-    private MainScreenController parent;            // The MainScreenController
+    private MainScreenController parent;            // The MainScreenController associated with the message listener.
+    private HighRoller client;                      // The HighRoller object associated with the message listener.
 
-    /**
-     *
-     * @param sock
-     * @return
-     */
-    public static String recieveOneOff(DatagramSocket sock) {
-        return "";
-    }
+
 }

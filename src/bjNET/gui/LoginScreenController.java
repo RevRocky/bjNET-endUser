@@ -32,6 +32,8 @@ public class LoginScreenController {
     @FXML
     private Button connectButton;
 
+    public final String DEFAULT_FILE_LOCATION = "client.hr";
+
     @FXML
     void openConnectionClick(MouseEvent event) {
         openConnection();
@@ -54,6 +56,7 @@ public class LoginScreenController {
         // Attempting to connect to the server
         try {
             client = new HighRoller(handleEntry.getText(), serverEntry.getValue());
+            client.writeToDisk(DEFAULT_FILE_LOCATION);
         }
         catch (IOException | ConnectionError e) {
             Alert connectionErrorWindow = new Alert(Alert.AlertType.ERROR);
@@ -61,8 +64,9 @@ public class LoginScreenController {
             connectionErrorWindow.setHeaderText(null);
             connectionErrorWindow.setContentText(e.getMessage());
             connectionErrorWindow.showAndWait();
-
+            return;
         }
+        // TODO close the current window and open up the main window.
     }
 
     @FXML

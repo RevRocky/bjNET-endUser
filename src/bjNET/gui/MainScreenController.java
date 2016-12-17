@@ -1,12 +1,11 @@
 package bjNET.gui;
 
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.StringJoiner;
 
+import bjNET.backRoom.HighRoller;
 import bjNET.backRoom.UnexpectedArgumentException;
 
 import javafx.fxml.FXML;
@@ -42,7 +41,9 @@ public class MainScreenController {
     @FXML
     private TextField betBox;
 
-    private final int MAX_CHAT_LINES     = 800;          //TODO Replace with user defined option
+    private final int MAX_CHAT_LINES        = 800;          //TODO Replace with user defined option
+    private final String DEFAULT_FILE_PATH  = "client.hr";
+    HighRoller client;
 
     @FXML
     void sendMessageKeyHandler(KeyEvent event) {
@@ -71,47 +72,14 @@ public class MainScreenController {
         assert chatBox != null : "fx:id=\"chatBox\" was not injected: check your FXML file 'MainScreenLayout.fxml'.";
         assert commandLine != null : "fx:id=\"commandLine\" was not injected: check your FXML file 'MainScreenLayout.fxml'.";
         assert sendMessage != null : "fx:id=\"sendMessage\" was not injected: check your FXML file 'MainScreenLayout.fxml'.";
+
+        try{
+            client = HighRoller.readHighRoller(DEFAULT_FILE_PATH);
+        }
+        catch (IOException e) {
+            // TODO Create an alert box and close the programme.
+        }
     }
-
-
-    // TODO test to ensure that I can attach the controller to the Message Listener class.
-    // TODO add logging support.
-    // TODO set cap on
-    /**
-     * Writes a message recieved from the server to the correct tab.
-     * @param newMessage The message received from the server. This message is already fully processed!
-     * @param destination A string describing the destination. Either "Chat" or "Action".
-     */
-    public void writeText(String newMessage, String destination) throws UnexpectedArgumentException {
-        TextArea destinationBox;
-        int lineCount;
-
-        if (destination.equals("Chat")) {
-            destinationBox          = chatBox;
-        }
-        else if (destination.equals("Action")) {
-            destinationBox          = actionBox;
-        }
-        else {
-            throw new UnexpectedArgumentException("Message was sent to an unexpected stream");
-        }
-
-        // Now we check to see if we need to remove a line
-        lineCount = GUI_Help.textboxLineCount(destinationBox);
-
-        // Writing to the TextField
-        destinationBox.setEditable(true);
-        if (lineCount > MAX_CHAT_LINES) {                                                                   // If we have more than the max number of lines!
-            String[] boxContents = destinationBox.getText().split("\n");                                    // Splitting string in to each line
-            boxContents = Arrays.copyOfRange(boxContents, 1, boxContents.length);                           // Copying all of the array... bar pos 1 onward
-            destinationBox.setText(String.format("%s\n%s", String.join("\n", boxContents), newMessage));    // Joining new away back
-        }
-        else {                                                                                              // We have not reached the cap
-            destinationBox.setText(String.format("%s\n%s", destinationBox.getText(), newMessage));    // Joining new away back
-        }
-        destinationBox.setEditable(false);
-    }
-
 
     // Adds listeners that ensure a responsive UI!
     public void addResponsiveListeners(){
@@ -131,6 +99,47 @@ public class MainScreenController {
 
 
     }
+
+    // TODO test to ensure that I can attach the controller to the Message Listener class.
+    // TODO add logging support.
+    // TODO set cap on
+    /**
+     * Writes a message recieved from the server to the correct tab.
+     * @param newMessage The message received from the server. This message is already fully processed!
+     * @param destination A string describing the destination. Either "Chat" or "Action".
+     */
+    public void writeText(String newMessage, String destination) throws UnexpectedArgumentException {
+        TextArea destinationBox;
+        int lineCount;
+
+        switch (destination) {
+            case "Chat":
+                destinationBox = chatBox;
+                break;
+            case "Action":
+                destinationBox = actionBox;
+                break;
+            default:
+                throw new UnexpectedArgumentException("Message was sent to an unexpected stream");
+        }
+
+        // Now we check to see if we need to remove a line
+        lineCount = GUI_Help.textboxLineCount(destinationBox);
+
+        // Writing to the TextField
+        destinationBox.setEditable(true);
+        if (lineCount > MAX_CHAT_LINES) {                                                                   // If we have more than the max number of lines!
+            String[] boxContents = destinationBox.getText().split("\n");                                    // Splitting string in to each line
+            boxContents = Arrays.copyOfRange(boxContents, 1, boxContents.length);                           // Copying all of the array... bar pos 1 onward
+            destinationBox.setText(String.format("%s\n%s", String.join("\n", boxContents), newMessage));    // Joining new away back
+        }
+        else {                                                                                              // We have not reached the cap
+            destinationBox.setText(String.format("%s\n%s", destinationBox.getText(), newMessage));          // Joining new away back
+        }
+        destinationBox.setEditable(false);
+    }
+
+
 
     // This method will draw a card to the play area of the screen!
     public void drawCard() {

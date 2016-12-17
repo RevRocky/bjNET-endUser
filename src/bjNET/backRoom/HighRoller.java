@@ -82,27 +82,43 @@ public class HighRoller implements Serializable {
         serverConnection.send(packet);
     }
 
-/*
-    */
 /**
      * Returns the HighRoller object stored at filePath
      * @param filePath the path to the file where the high roller object is stored!
      * @return The HighRoller object stored at location filePath.
-     *//*
-
-    public static HighRoller readHighRoller(String filePath) {
-        return
+     * @throws IOException should an error occur when reading the file from disk.
+     */
+    // TODO make sure that these errors are being handled in the best possible manner!
+    public static HighRoller readHighRoller(String filePath) throws IOException {
+        try(ObjectInputStream oIn = new ObjectInputStream(new FileInputStream(filePath))) {
+            return (HighRoller)oIn.readObject();
+        }
+        catch (Exception e) {
+            throw new IOException("Unexpected behaviour when reading player information from disk");
+        }
     }
 
-    */
-/**
-     * Writes the highRoller class to the disk.
+
+    /**
+     * Writes the highRoller class to the disk in a binary format.
      * @param filePath The location where the file will be written to disk.
-     *//*
+     * @throws IOException should any issue happen while writing the file to disk. Will prompt a popup window
+     * in the user interface.
+     */
 
-    public void writeToDisk(String filePath) {
+    public void writeToDisk(String filePath) throws IOException {
+        // Declaring some of our output streams
+        FileOutputStream fOut   = new FileOutputStream(filePath);
+        ObjectOutputStream oOut = new ObjectOutputStream(fOut);
+        oOut.writeObject(this);
 
+        // Closing our object and file streams. Any errors will be tossed up to the GUI (for now)
+        if (fOut != null) {
+            fOut.close();
+        }
+        if (oOut != null) {
+            oOut.close();
+        }
     }
-*/
 }
 
