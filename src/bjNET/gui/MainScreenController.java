@@ -9,11 +9,14 @@ import bjNET.backRoom.HighRoller;
 import bjNET.backRoom.UnexpectedArgumentException;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+
+import static java.lang.System.exit;
 
 public class MainScreenController {
 
@@ -77,7 +80,13 @@ public class MainScreenController {
             client = HighRoller.readHighRoller(DEFAULT_FILE_PATH);
         }
         catch (IOException e) {
-            // TODO Create an alert box and close the programme.
+            Alert connectionErrorWindow = new Alert(Alert.AlertType.ERROR);
+            connectionErrorWindow.setTitle("Unexpected Error Reading from Disk");           // We want our title to be the error connection type!
+            connectionErrorWindow.setHeaderText(null);
+            connectionErrorWindow.setContentText("There was an unexpected error while reading " +
+                                                    "game information from the disk!");
+            connectionErrorWindow.showAndWait();
+            exit(2);
         }
     }
 
@@ -129,12 +138,12 @@ public class MainScreenController {
         // Writing to the TextField
         destinationBox.setEditable(true);
         if (lineCount > MAX_CHAT_LINES) {                                                                   // If we have more than the max number of lines!
-            String[] boxContents = destinationBox.getText().split("\n");                                    // Splitting string in to each line
-            boxContents = Arrays.copyOfRange(boxContents, 1, boxContents.length);                           // Copying all of the array... bar pos 1 onward
-            destinationBox.setText(String.format("%s\n%s", String.join("\n", boxContents), newMessage));    // Joining new away back
+            String[] boxContents = destinationBox.getText().split("\n");                              // Splitting string in to each line
+            boxContents = Arrays.copyOfRange(boxContents, 1, boxContents.length);                      // Copying all of the array... bar pos 1 onward
+            destinationBox.setText(String.format("%s\n%s", String.join("\n", boxContents), newMessage));     // Joining new away back
         }
-        else {                                                                                              // We have not reached the cap
-            destinationBox.setText(String.format("%s\n%s", destinationBox.getText(), newMessage));          // Joining new away back
+        else {                                                                                               // We have not reached the cap
+            destinationBox.setText(String.format("%s\n%s", destinationBox.getText(), newMessage));           // Joining new away back
         }
         destinationBox.setEditable(false);
     }

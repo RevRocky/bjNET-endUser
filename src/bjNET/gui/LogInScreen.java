@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class bjNET_app extends Application {
+public class LogInScreen extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{

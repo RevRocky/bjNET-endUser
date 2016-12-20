@@ -1,5 +1,6 @@
 package bjNET.backRoom;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 
 import java.net.*;
@@ -12,7 +13,6 @@ public class HighRoller implements Serializable {
 
 
     private static final long serialVersionUID = 2059951317615006879L;
-    private DatagramSocket serverConnection;
     private final InetAddress serverAddy;
     private final int port;
     private static final String DEFAULTPORT = "15000";
@@ -29,7 +29,7 @@ public class HighRoller implements Serializable {
         serverAddy = InetAddress.getByName(IPAddy);
         this.port = Integer.parseInt(port);
 
-        connectAndVerify();
+        firstConnection();
     }
 
     // TODO: Eventually Saved data (w.r.t monies and wotnot will be saved)
@@ -39,10 +39,12 @@ public class HighRoller implements Serializable {
 
     // This connects to the server, and waits to see if the connection was successful.
     // It flags the appropriate exception should something go wrong!
-    private void connectAndVerify() throws IOException, ConnectionError {
+    private void firstConnection() throws IOException, ConnectionError {
+        DatagramSocket serverConnection;
+
         serverConnection = new DatagramSocket();
         byte[] helloMSG = packageMessage("jo", String.format("%s", handle));
-        sendMessage(helloMSG);
+        sendMessage(serverConnection, helloMSG);
 
         // Now we will ready to receive the incoming message. This may be best suited for a static method in
         // message listener
@@ -66,8 +68,7 @@ public class HighRoller implements Serializable {
         if (receivedMSG.equals("409")) {
             throw new ConnectionError(String.format("The user name '%s' is already in use. Please select a new user name.", handle));
         }
-        // Implicit else
-
+        serverConnection.close();
     }
 
     // A short little function that packages a message before it gets sent out over the connection!
@@ -77,7 +78,7 @@ public class HighRoller implements Serializable {
     }
 
     // A little wrapper method that sends a message to the server!
-    private void sendMessage(byte[] message) throws IOException {
+    private void sendMessage(DatagramSocket serverConnection, byte[] message) throws IOException {
         DatagramPacket packet = new DatagramPacket(message, message.length, serverAddy, port);
         serverConnection.send(packet);
     }

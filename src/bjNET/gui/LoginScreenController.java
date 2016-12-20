@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class LoginScreenController {
 
@@ -50,6 +51,7 @@ public class LoginScreenController {
     // Opening a connection to the server using logic in the HighRoller class. If connection is successful, we will
     // close the connection window and open up the main application.
     // TODO Add support for ports other than 5000!
+    // TODO This may not be the best implimentation of a multi windowed programme...
     private void openConnection() {
         HighRoller client;                                               // Declaring our instance of the HighRoller class.
 
@@ -66,9 +68,17 @@ public class LoginScreenController {
             connectionErrorWindow.showAndWait();
             return;
         }
-        // TODO close the current window and open up the main window.
+
+        closeWindow();
+        new bjNET_Main().start(new Stage());
+
     }
 
+    // Little method to close the current window.
+    private void closeWindow() {
+        Stage thisWindow = (Stage) connectButton.getScene().getWindow();
+        thisWindow.close();
+    }
     @FXML
     void initialize() {
     }
